@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Chamar API e comentar no commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Instala o jq
           sudo apt-get update && sudo apt-get install -y jq
@@ -19,13 +21,15 @@ jobs:
 
           echo "$top_aluno"
 
-          # Comenta no commit atual
+          # Clona o repositório com autenticação
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git clone https://github.com/${{ github.repository }} repo
+          git clone https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git repo
           cd repo
           git checkout ${{ github.ref_name }}
+
+          # Adiciona o arquivo com o aluno do mês e faz o commit
           echo "$top_aluno" >> aluno_do_mes.txt
           git add aluno_do_mes.txt
-          git commit -m "$top_aluno"
+          git commit -m "$top_aluno" || echo "Nada novo pra commitar"
           git push
