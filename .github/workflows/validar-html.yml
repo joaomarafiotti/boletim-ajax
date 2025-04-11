@@ -1,0 +1,14 @@
+# .github/workflows/validate-html.yml
+name: Validação do HTML
+
+on: [push, pull_request]
+
+jobs:
+  html-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validar HTML
+        uses: Cyb3r-Jak3/html5validator-action@v0.2.1
+        with:
+          files: '*.html'
