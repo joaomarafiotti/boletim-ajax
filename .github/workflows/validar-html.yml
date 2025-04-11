@@ -1,5 +1,4 @@
-# .github/workflows/validate-html.yml
-name: Validação do HTML
+name: Validar HTML
 
 on: [push, pull_request]
 
@@ -9,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Validar HTML
-        uses: Cyb3r-Jak3/html5validator-action@v0.2.1
+        uses: svenstaro/html5validator-action@v0.4.0
         with:
-          files: '*.html'
+          root: .
+          blacklist: node_modules
